@@ -1,5 +1,6 @@
 
 
+import javax.sound.sampled.*;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
@@ -19,12 +20,6 @@ public class Assign9 extends Applet {
 	private int secondsLeft;
 	private GameAlarm alarm = null;
 	private Font font = null;
-	private AudioClip soundBossDeath = null;
-	private AudioClip soundHit = null;
-	private AudioClip soundJump = null;
-	private AudioClip soundLose = null;
-	private AudioClip soundWin = null;
-	private AudioClip soundShoot = null;
 	
 	// REQUIRED FOR FLICKER/FLASH FIX
 	private Image image = null;
@@ -35,20 +30,16 @@ public class Assign9 extends Applet {
 		super.init();
 		setSize(Constants.APPLET_WIDTH, Constants.APPLET_HEIGHT);
 		setBackground(Color.BLACK);
-		
-		soundBossDeath = getAudioClip(getDocumentBase(), "assets/sound_boss_death.wav");
-		soundHit = getAudioClip(getDocumentBase(), "assets/sound_hit.wav");
-		soundJump = getAudioClip(getDocumentBase(), "assets/sound_jump.wav");
-		soundLose = getAudioClip(getDocumentBase(), "assets/sound_lose.wav");
-		soundShoot = getAudioClip(getDocumentBase(), "assets/sound_shoot.wav");
-		soundWin = getAudioClip(getDocumentBase(), "assets/sound_win.wav");
+
+        SoundEffects.init();
 		
 		world = new World(this);
 		alarm = new GameAlarm(180);
 		alarm.createAlarm();
 		
 		try {
-			font = Font.createFont(Font.TRUETYPE_FONT, new File("assets/font.ttf")).deriveFont(21f);
+			font = Font.createFont(Font.TRUETYPE_FONT, this.getClass().getClassLoader().getResourceAsStream(
+                    "assets/font.ttf")).deriveFont(21f);
 			setFont(font);
 		} catch (FontFormatException e) {
 			e.printStackTrace();
@@ -74,27 +65,27 @@ public class Assign9 extends Applet {
 		
 		if (secondsLeft > 170) {
 			g2d.setColor(Color.WHITE);
-			g2d.drawString("Right click to shoot", 420, 520);
-			g2d.drawString("Left click to stay in the air", 420, 540);
-			g2d.setColor(Color.YELLOW);
-			g2d.drawString("You are the green person", 420, 560);
-			g2d.setColor(Color.RED);
-			g2d.drawString("Survive 3 waves to reach the boss", 420, 580);
+			g2d.drawString("Right click to shoot".toUpperCase(), 420, 520);
+			g2d.drawString("Left click to stay in the air".toUpperCase(), 420, 540);
+			g2d.setColor(Color.GREEN);
+			g2d.drawString("YOU ARE THE GREEN FLUFF".toUpperCase(), 420, 560);
+			g2d.setColor(Color.BLUE);
+			g2d.drawString("Survive 3 waves to reach the bosses".toUpperCase(), 420, 580);
 		}
 		
 		if (world.getWave() == 5) {
 			setGameOver(true);
 			g2d.setColor(Color.GREEN);
-			g2d.drawString("YOU WIN!", 300, 200);
-			soundWin.play();
+			g2d.drawString("YOU WIN!".toUpperCase(), 300, 200);
+			SoundEffects.WIN.play();
 			return;
 		} else {
 			if (world.getPlayer().isDead() || secondsLeft <= 0
 					|| isDidPassPlayer()) {
 				setGameOver(true);
 				g2d.setColor(Color.RED);
-				g2d.drawString("YOU LOSE!", 300, 200);
-				soundLose.play();
+				g2d.drawString("YOU LOSE!".toUpperCase(), 300, 200);
+                SoundEffects.LOSE.play();
 				return;
 			}
 		}
@@ -154,32 +145,6 @@ public class Assign9 extends Applet {
 	public int getSecondsLeft() {
 		return secondsLeft;
 	}
-
-
-	public AudioClip getSoundBossDeath() {
-		return soundBossDeath;
-	}
-
-	public AudioClip getSoundHit() {
-		return soundHit;
-	}
-
-	public AudioClip getSoundJump() {
-		return soundJump;
-	}
-
-	public AudioClip getSoundLose() {
-		return soundLose;
-	}
-
-	public AudioClip getSoundWin() {
-		return soundWin;
-	}
-
-	public AudioClip getSoundShoot() {
-		return soundShoot;
-	}
-
 
 	public boolean isDidPassPlayer() {
 		return didPassPlayer;

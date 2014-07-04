@@ -75,7 +75,7 @@ public class Player extends Entity implements Collidable {
 			this.setCurrentBullet(bullet);
 		}
 		setFiredBullet(true);
-		main.getSoundShoot().play();
+        SoundEffects.SHOOT.play();
 	}
 	
 	public void jump() {
@@ -83,7 +83,7 @@ public class Player extends Entity implements Collidable {
 			return;
 		}
 		setVelocity(-7.6);
-		main.getSoundJump().play();
+        SoundEffects.JUMP.play();
 	}
 
 	/**

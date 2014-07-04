@@ -31,8 +31,8 @@ public abstract class Entity {
 	public Entity(final String fileName, final Position position) {
 		this.fileName = fileName;
 		try {
-			this.image = ImageIO.read(new File("assets/"
-					+ fileName + ".png"));
+			this.image = ImageIO.read(
+                    this.getClass().getClassLoader().getResource("assets/" + fileName + ".png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

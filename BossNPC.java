@@ -24,7 +24,7 @@ public class BossNPC extends NPC {
 				if (getHitpoints() <= 0) {
 					setDead(true);
 					World.enemyCount --;
-					main.getSoundBossDeath().play();
+					SoundEffects.BOSS_DEATH.play();
 					if (bullet.getOwner() instanceof Player) {
 						final Player player = (Player) bullet.getOwner();
 						player.setScore(player.getScore() + 1000);
